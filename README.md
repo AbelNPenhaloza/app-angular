@@ -1,59 +1,69 @@
-# AppAngular
+#  TP Angular 21 - Gestión de Inscripciones
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+**Autor:** Abel Nestor Peñaloza  
+**Legajo:** 2613  
+**Fecha:** 2026  
+**Tecnologías:** Angular 21, Bootstrap 5, TypeScript, Reactive Forms
 
-## Development server
+---
 
-To start a local development server, run:
+##  Descripción del proyecto
 
-```bash
-ng serve
-```
+Aplicación web desarrollada en **Angular 21** para la gestión de inscripciones a cursos técnicos.  
+Permite registrar alumnos, aplicar descuentos por categoría (estudiante, egresado, particular), editar y eliminar inscripciones, y visualizar resúmenes estadísticos.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Funcionalidades principales
 
-## Code scaffolding
+-  Formulario reactivo con validaciones en tiempo real
+-  Cálculo automático de total con descuentos:
+  -  **Estudiante:** 35% descuento
+  -  **Egresado:** 50% descuento
+  -  **Particular:** 0% descuento
+-  CRUD completo de inscripciones (Create, Read, Update, Delete)
+-  Tabla responsiva con botones de acción (Editar/Eliminar)
+-  Resumen por categoría y total general recaudado
+-  Layout responsive con Bootstrap 5
+-  Footer consistente con la paleta de colores del header
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+##  Tecnologías utilizadas
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| Angular | 21 | Framework principal |
+| Bootstrap | 5.3 | Estilos y componentes UI |
+| TypeScript | 5.x | Lenguaje |
+| Reactive Forms | - | Manejo de formularios |
+| Angular Pipes | - | Formato de fechas y monedas |
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+##  Paleta de colores personalizada
 
-To build the project run:
+```css
+:root {
+  --mi-gris: #dddddd;      /* Fondo general */
+  --mi-azul: #4E61D3;      /* Header y footer */
+  --mi-letra: #2C3947;     /* Texto principal */
+  --mi-blanco: #ffffff;    /* Texto sobre fondos oscuros */
+  --mi-acento: #57ebb6;    /* Hover y bordes decorativos */
+}
+## Estructura del Proyecto
+src/app/
+├── components/
+│   ├── shared/                     ← Componentes reutilizables
+│   │   ├── header/                 ← Header de navegación
+│   │   └── footer/                 ← Footer institucional
+│   ├── formulario-inscripcion/     ← Componente principal
+│   ├── punto1/                     ← Slide personalizado
+│   ├── punto2/                     ← Lista de productos
+│   └── punto3/                     ← Juego de memoria
+├── models/
+│   └── inscripcion.ts              ← Interfaces y enums
+├── services/
+│   └── inscripcion.service.ts      ← CRUD y lógica de negocio
+├── app.ts                          ← Componente raíz
+├── app.routes.ts                   ← Configuración de rutas
+└── app.css                         ← Estilos globales
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
