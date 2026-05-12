@@ -1,0 +1,28 @@
+/* 📄 components/shared/footer/footer.css */
+
+/* Usar la misma paleta de colores que el header */
+footer {
+  background-color: var(--mi-azul) !important;
+  border-top: 3px solid var(--mi-acento) !important;
+}
+
+footer .text-primary,
+footer .fw-bold {
+  color: var(--mi-blanco) !important;
+}
+
+footer .text-secondary,
+footer .text-body-secondary {
+  color: var(--mi-blanco) !important;
+  opacity: 0.85;
+}
+
+footer .badge {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+footer .badge:hover {
+  transform: translateY(-2px);
+  background-color: var(--mi-acento) !important;
+  color: var(--mi-azul) !important;
+}

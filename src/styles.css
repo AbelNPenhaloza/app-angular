@@ -1,1 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --mi-gris: #dddddd;
+  --mi-azul: #4E61D3;
+  --mi--letra: #2C3947;
+  --mi-blanco: #ffffff;
+  --mi-acento: #57ebb6; /* El verde de tu paleta */
+}
+
+/* Opcional: fondo general de la página */
+body {
+  background-color: var(--mi-gris);
+  color: var(--mi-letra);
+}
+/* Cambiamos el fondo del navbar */
+.bg-dark {
+  background-color: var(--mi-azul) !important;
+  border-bottom: 3px solid var(--mi-acento); /* Una línea sutil abajo */
+}
+
+/* Color de los links (blanco por defecto) */
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--mi-blanco);
+  font-weight: 500;
+  transition: 0.3s; /* Para que el cambio de color sea suave */
+}
+
+/* Efecto al pasar el mouse por los links */
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: var(--mi-acento) !important;
+}
+
+/* Estilo para el nombre de la marca (TP Angular) */
+.navbar-brand {
+  color: var(--mi-acento) !important;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+/* El link de la página donde estoy parado tendrá una marca abajo */
+.active-link {
+  color: var(--mi-acento) !important;
+  border-bottom: 2px solid var(--mi-acento);
+}

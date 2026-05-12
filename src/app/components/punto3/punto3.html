@@ -1,0 +1,44 @@
+<div class="container py-5">
+  <!-- Cabecera de Control -->
+  <div class="row mb-4 p-4 rounded shadow-sm" style="background-color: var(--mi-negro); color: white;">
+    <div class="col-md-6 d-flex align-items-center">
+      <h2 class="mb-0" style="border-left: 4px solid var(--mi-acento); padding-left: 15px;">
+        MEMORY GAME
+      </h2>
+    </div>
+    <div class="col-md-6 text-md-end d-flex justify-content-end align-items-center gap-3 mt-3 mt-md-0">
+      <div class="h5 mb-0">
+        Intentos: <span class="badge" [ngClass]="intentos <= 3 ? 'bg-danger' : 'bg-primary'">{{ intentos }}</span>
+      </div>
+      <button (click)="iniciarJuego()" class="btn btn-success fw-bold" [disabled]="enJuego">INICIAR</button>
+      <button (click)="reiniciarJuego()" class="btn btn-outline-light">REINICIAR</button>
+    </div>
+  </div>
+
+  <!-- Tablero de Cartas -->
+  <div class="row row-cols-2 row-cols-md-4 g-3 justify-content-center">
+    @for (carta of tablero; track carta.id) {
+      <div class="col" style="max-width: 180px;">
+        <div 
+          class="card text-center shadow-sm border-0 h-100" 
+          [style.cursor]="enJuego && !bloquearTablero ? 'pointer' : 'not-allowed'"
+          (click)="revelarCarta(carta)"
+          [style.background-color]="carta.estado === 'encontrada' ? '#EE66A6' : '#8494FF'"
+          style="min-height: 150px; transition: transform 0.3s;"
+        >
+          <div class="card-body d-flex align-items-center justify-content-center">
+            @if (carta.estado === 'tapada') {
+              <!-- Icono neutral para carta tapada -->
+              <i class="bi bi-question-lg display-1 text-muted opacity-50"></i>
+            } @else {
+              <!-- Icono real de la carta -->
+              <i class="bi {{ carta.icono }} display-3 animate__animated animate__flipInY" 
+                 [style.color]="carta.estado === 'encontrada' ? '#198754' : '#FFDE42'">
+              </i>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

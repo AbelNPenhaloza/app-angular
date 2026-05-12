@@ -1,0 +1,41 @@
+<div id="carouselExampleCaptions" class="carousel slide h-100" style="background-color: var(--mi-negro);">
+  
+  <!-- Indicadores dinámicos -->
+  <div class="carousel-indicators">
+    @for (evento of eventos; track $index) {
+      <button type="button" 
+              [class.active]="$index === indiceActual"
+              (click)="seleccionarSlide($index)"
+              aria-label="Slide">
+      </button>
+    }
+  </div>
+
+  <!-- Contenido del Carrusel -->
+  <div class="carousel-inner h-100">
+    @for (evento of eventos; track $index) {
+      <div class="carousel-item h-100" [class.active]="$index === indiceActual">
+        <img [src]="evento.img" 
+             class="d-block w-100" 
+             [alt]="evento.nombre"
+             style="height: 70vh; object-fit: cover; filter: brightness(0.6);">
+        
+        <div class="carousel-caption d-none d-md-block p-4 rounded" 
+             style="background: rgba(0,0,0,0.2); border-bottom: 4px solid var(--mi-acento);">
+          <h5 class="display-5 fw-bold" style="color: var(--mi-acento);">{{ evento.nombre }}</h5>
+          <p class="lead">{{ evento.descripcion }}</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Botones de Control (Vinculados a tus funciones de TS) -->
+  <button class="carousel-control-prev" type="button" (click)="anterior()">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" (click)="siguiente()">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>

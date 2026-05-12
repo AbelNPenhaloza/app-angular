@@ -1,0 +1,225 @@
+<!-- Contenedor principal con Bootstrap -->
+<div class="container mt-4">
+
+  <!-- Botón superior para mostrar/ocultar formulario -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Gestión de Inscripciones</h2>
+    <button class="btn btn-primary" (click)="toggleFormulario()">
+      @if (mostrarFormulario) {
+         Ocultar Formulario
+      } @else {
+         Nueva Inscripción
+      }
+    </button>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- SECCIÓN 1: FORMULARIO DE INSCRIPCIÓN      -->
+  <!-- ========================================== -->
+  @if (mostrarFormulario) {
+    <div class="card shadow-sm mb-4">
+      <div class="card-header" [class.bg-primary]="!modoEdicion" [class.bg-warning]="modoEdicion" [class.text-white]="!modoEdicion">
+        <h3 class="card-title mb-0">
+          @if (modoEdicion) {
+             Editando Inscripción
+          } @else {
+             Nueva Inscripción
+          }
+        </h3>
+      </div>
+      <div class="card-body">
+
+        <form [formGroup]="formulario" (ngSubmit)="registrar()">
+          <div class="row">
+
+            <!-- Campo DNI -->
+            <div class="col-md-6 mb-3">
+              <label for="dni" class="form-label">DNI *</label>
+              <input type="text" class="form-control" id="dni" formControlName="dni">
+              @if (formulario.get('dni')?.invalid && formulario.get('dni')?.touched) {
+                <div class="text-danger small mt-1">
+                  @if (formulario.get('dni')?.errors?.['required']) { El DNI es obligatorio }
+                  @if (formulario.get('dni')?.errors?.['pattern']) { El DNI debe tener 7 u 8 dígitos }
+                </div>
+              }
+            </div>
+
+            <!-- Campo Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email *</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+              @if (formulario.get('email')?.invalid && formulario.get('email')?.touched) {
+                <div class="text-danger small mt-1">
+                  @if (formulario.get('email')?.errors?.['required']) { El email es obligatorio }
+                  @if (formulario.get('email')?.errors?.['pattern']) { Ingrese un email válido
+                  (ej: usuario@dominio.com)}
+                </div>
+              }
+            </div>
+
+            <!-- Campo Curso -->
+            <div class="col-md-6 mb-3">
+              <label for="curso" class="form-label">Curso *</label>
+              <select class="form-select" id="curso" formControlName="curso">
+                <option value="Angular 21">Angular 21</option>
+                <option value="Python & AI">Python & AI</option>
+                <option value="Automatización con n8n">Automatización con n8n</option>
+                <option value="Backend con Java">Backend con Java</option>
+                <option value="Backend con NodeJS">Backend con NodeJS</option>
+              </select>
+            </div>
+
+            <!-- Campo Precio -->
+            <div class="col-md-6 mb-3">
+              <label for="precio" class="form-label">Precio del Curso $ *</label>
+              <input type="number" class="form-control" id="precio" formControlName="precio">
+              @if (formulario.get('precio')?.invalid && formulario.get('precio')?.touched) {
+                <div class="text-danger small mt-1">
+                  @if (formulario.get('precio')?.errors?.['required']) { El precio es obligatorio }
+                  @if (formulario.get('precio')?.errors?.['min']) { El precio debe ser mayor a 0 }
+                </div>
+              }
+            </div>
+
+            <!-- Campo Categoría -->
+            <div class="col-md-6 mb-3">
+              <label for="categoria" class="form-label">Categoría del Alumno *</label>
+              <select class="form-select" id="categoria" formControlName="categoriaAlumno">
+                <option value="1"> Estudiante (35% descuento)</option>
+                <option value="2"> Egresado (50% descuento)</option>
+                <option value="3"> Particular (0% descuento)</option>
+              </select>
+            </div>
+
+            <!-- Total a pagar -->
+            <div class="col-md-6 mb-3">
+              @if (totalCalculado !== null) {
+                <div class="alert alert-success mt-2">
+                  <strong> Total a pagar:</strong> {{ totalCalculado | currency }}
+                </div>
+              }
+            </div>
+
+          </div>
+
+          <!-- Botón Registrar/Actualizar -->
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="formulario.invalid || totalCalculado === null">
+              @if (modoEdicion) {
+                 Actualizar Inscripción
+              } @else {
+                 Registrar Inscripción
+              }
+            </button>
+            @if (modoEdicion) {
+              <button type="button" class="btn btn-secondary btn-lg" (click)="cancelarEdicion()">
+                 Cancelar Edición
+              </button>
+            }
+          </div>
+
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- ========================================== -->
+  <!-- SECCIÓN 2: TABLA DE INSCRIPCIONES         -->
+  <!-- ========================================== -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-secondary text-white">
+      <h4> Listado de Inscripciones</h4>
+    </div>
+    <div class="card-body">
+
+      @if (inscripciones.length === 0) {
+        <div class="alert alert-info text-center">
+          No hay inscripciones registradas aún.
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>DNI</th>
+                <th>Email</th>
+                <th>Curso</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+                <th class="text-end">Total</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (inscripcion of inscripciones; track inscripcion.dni) {
+                <tr>
+                  <td>{{ inscripcion.dni }}</td>
+                  <td>{{ inscripcion.email }}</td>
+                  <td>{{ inscripcion.curso }}</td>
+                  <td>
+                    @switch (inscripcion.categoriaAlumno) {
+                      @case ('1') {  Estudiante }
+                      @case ('2') {  Egresado }
+                      @case ('3') {  Particular }
+                    }
+                  </td>
+                  <td>{{ inscripcion.fechaInscripcion | date:'dd/MM/yyyy' }}</td>
+                  <td class="text-end">{{ inscripcion.totalPagar | currency }}</td>
+                  <td class="text-center">
+                    <button class="btn btn-warning btn-sm me-1" (click)="prepararEdicion(inscripcion)">
+                       Editar
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="eliminarInscripcion(inscripcion.dni)">
+                       Eliminar
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- SECCIÓN 3: RESUMEN POR CATEGORÍA          -->
+  <!-- ========================================== -->
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <h5> Resumen por Categoría</h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+               Estudiantes (35% dto)
+              <span class="badge bg-primary rounded-pill">{{ resumen.porCategoria['1'] || 0 }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+               Egresados (50% dto)
+              <span class="badge bg-primary rounded-pill">{{ resumen.porCategoria['2'] || 0 }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+               Particulares (0% dto)
+              <span class="badge bg-primary rounded-pill">{{ resumen.porCategoria['3'] || 0 }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h5> Total General Recaudado</h5>
+        </div>
+        <div class="card-body text-center">
+          <h2>{{ resumen.totalGeneral | currency }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
